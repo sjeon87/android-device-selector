@@ -116,3 +116,7 @@ If no target is available, choose whether to create an emulator, connect a physi
 
 - [SKILL.md](SKILL.md): Instructions for device selection and testing.
 - [agents/openai.yaml](agents/openai.yaml): Optional interface metadata for Codex. Other agents use `SKILL.md`.
+
+## Support
+
+[Buy me a coffee](https://www.buymeacoffee.com/lungo)
