@@ -5,6 +5,7 @@ description: Ask the user to choose an existing emulator, a new emulator, or a c
 
 # Android Device Selector
 
+Use this skill with any agent that supports the Agent Skills format and can access Android tools.
 An Android Virtual Device (AVD) is a saved emulator configuration.
 
 ## Required choice
@@ -41,6 +42,7 @@ If the list contains no physical devices, state this result.
 If no existing target is available, ask whether to create an AVD, connect a physical device, or stop.
 If an answer tool is available, use it.
 Otherwise, ask in the conversation and wait for an answer.
+If the agent cannot receive an answer, stop work that needs a device until the user supplies a choice.
 Never treat silence, elapsed time, or a suggested default as the user's choice.
 Continue independent preparation, such as source inspection or an offline build, while you wait.
 
