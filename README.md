@@ -1,6 +1,6 @@
 # Android Device Selector
 
-A reusable skill that asks you to choose a device before each new Android app test task.
+A reusable skill that selects an Android test device and reuses your choice in the same conversation or session.
 Use it with Codex, Claude Code, Hermes Agent, or another agent that supports the [Agent Skills format](https://agentskills.io/specification).
 
 Choose from:
@@ -92,25 +92,31 @@ Use the android-device-selector skill to test this Android app.
 ```
 
 Agents that support automatic skill selection can also use this skill when a request matches its description.
-If the agent cannot ask a question, it must wait for your choice before it uses a device.
+If the agent needs a new choice but cannot ask a question, it must wait for your choice.
 Tests that do not need a device are outside the scope of this skill.
 
 ## Selection rules
 
-1. Inspect saved emulators and connected physical devices without changes.
-2. Show available targets, including device names, serial numbers, and connection states when available.
-3. Ask you to choose a target in your language.
-4. Wait for your answer before creating or starting an emulator, installing the app, or running device tests.
+1. Use the target in your current request, or check your previous choice in the same conversation or session.
+2. Reuse your previous choice without another question if it remains available and supports the test.
+3. If a new choice is necessary, inspect saved emulators and connected physical devices without changes.
+4. Show available targets and ask you to choose in your language. Wait for your answer before work that needs this choice.
 5. Use only the selected target.
 6. Report the target and test result.
 
 If your current request already specifies a target, the skill uses that choice without another question.
-Your choice applies to retries and related checks within the same task.
-Each new device test task requires a new choice.
+Your choice also applies to retries, related checks, and later test tasks in the same conversation or session.
+The agent checks availability and compatibility before each new task.
+A stopped emulator remains available if its saved AVD configuration still exists and supports the test.
+The agent starts that AVD when necessary without another selection question.
+The agent matches a restarted emulator to its AVD name because its device serial can change.
+Your choice does not apply to a different conversation or session.
 
 The skill preserves existing device data and does not silently select a replacement target.
 Offline devices and devices without debugging authorization are unavailable for testing.
 If no target is available, choose whether to create an emulator, connect a physical device, or stop.
+If your previous target is unavailable or cannot support the test, the agent explains the problem before asking for another choice.
+For a disconnected physical device, the agent can wait for its connection instead.
 
 ## Files
 

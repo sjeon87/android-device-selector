@@ -1,6 +1,6 @@
 ---
 name: android-device-selector
-description: Ask the user to choose an existing emulator, a new emulator, or a connected physical Android device before each app test task. Use for Android device tests, including UI tests and manual checks. Exclude tests that do not need a device.
+description: Select an Android test device and reuse an available choice in the same conversation or session. Use for Android device tests, including UI tests and manual checks. Exclude tests that do not need a device.
 ---
 
 # Android Device Selector
@@ -8,19 +8,35 @@ description: Ask the user to choose an existing emulator, a new emulator, or a c
 Use this skill with any agent that supports the Agent Skills format and can access Android tools.
 An Android Virtual Device (AVD) is a saved emulator configuration.
 
-## Required choice
+## Select or reuse a target
 
-Ask the user to select a test target before each new Android device test task.
-Offer these choices:
+If the current request specifies a test target, use that choice without another question.
+Otherwise, check the previous choice in the current conversation or session before each new Android device test task.
+Use available Android tools to check that target without changes.
+
+- For an AVD, check that the saved configuration still exists and supports the test.
+- Reuse that AVD even if its emulator stopped. Start it without another selection question when the test needs it.
+- For a physical device, check that the selected device is connected, authorized, and ready for testing.
+- If the previous target is available and supports the test, reuse it without another selection question.
+
+Keep the target type and AVD name or physical device serial in the conversation context.
+Also record whether you created the AVD.
+An emulator serial can change after a restart. Match the running emulator to the selected AVD name before using its serial.
+Do not carry the choice into a different conversation or session.
+If inspection fails, report the failure. Do not assume that the target is missing or select a replacement.
+
+Ask for a choice when no previous choice exists or the user requests another target without specifying one.
+If the previous target is unavailable or cannot support the test, explain the problem before asking for another choice.
+For a disconnected physical device, you can wait for its connection instead.
+Offer these choices when a selection question is necessary:
 
 - An existing AVD.
 - A new AVD.
 - A connected physical Android device.
 
-Wait for the user's choice before you create or start an AVD, install an app, or run device tests.
-This requirement also applies to running emulators and connected physical devices.
-Do not carry a choice from an earlier task into a new task.
-If the current request already specifies the test target, use that choice without another question.
+If a selection question is necessary, wait for the user's choice before creating or starting an AVD.
+Also wait before installing an app or running device tests.
+Running emulators and connected physical devices do not count as a choice unless the user selected them.
 
 ## Before the question
 
@@ -69,6 +85,6 @@ Configure other test tools to use only the selected target.
 Do not let a tool select a device automatically.
 
 Use the choice for retries and related checks within the same test task.
-Ask again when the user requests a new Android device test task.
+Reuse it for later test tasks in the same conversation or session after checking availability and compatibility.
 Report the target type, name or model, device serial, and test result when the task ends.
 For an AVD, also report whether you created it.

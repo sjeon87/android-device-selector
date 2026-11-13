@@ -1,3 +1,3 @@
 interface:
   display_name: "Android 테스트 기기 선택"
-  short_description: "앱 테스트마다 기존·새 에뮬레이터 또는 연결된 실제 기기를 선택"
+  short_description: "Android 테스트 기기 선택 및 같은 대화·세션에서 재사용"
